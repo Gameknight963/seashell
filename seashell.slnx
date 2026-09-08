@@ -1,7 +1,12 @@
 <Solution>
   <Configurations>
+    <Platform Name="Any CPU" />
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="seashell/seashell.vcxproj" />
+  <Project Path="DemoApplication/DemoApplication.pyproj" Type="888888a0-9f3d-457c-b088-3a5042f75d52" Id="3f13f2e8-8a07-40d1-a36f-b56e5b5db578">
+    <Platform Project="AnyCPU" />
+    <Build Project="false" />
+  </Project>
+  <Project Path="seashell/seashell.vcxproj" Id="b35aa7a8-80c7-4a2d-a02a-ea9b3919ab78" />
 </Solution>
