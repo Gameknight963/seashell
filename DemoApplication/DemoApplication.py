@@ -1,4 +1,3 @@
 import seashell
 
-result = seashell.hello()
-print(result)
+seashell.call_messagebox("hello", "thing")

@@ -1,12 +1,39 @@
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
+#include <Windows.h>
+
+typedef int (WINAPI* MessageBoxW_t)(HWND, LPCWSTR, LPCWSTR, UINT);
 
 static PyObject* hello(PyObject* self, PyObject* const* args, Py_ssize_t nargs) {
     return PyUnicode_FromString("hello from C!");
 }
 
+static PyObject* call_messagebox(PyObject* self, PyObject* const* args, Py_ssize_t nargs) {
+    if (nargs != 2) {
+        PyErr_SetString(PyExc_TypeError, "expected (text, caption)");
+        return NULL;
+    }
+    const wchar_t* text = PyUnicode_AsWideCharString(args[0], NULL);
+    const wchar_t* caption = PyUnicode_AsWideCharString(args[1], NULL);
+    if (!text || !caption) {
+        PyErr_SetString(PyExc_TypeError, "arguments must be strings");
+        return NULL;
+    }
+
+    HMODULE lib = LoadLibraryW(L"user32.dll");
+    if (!lib) {
+        PyErr_SetFromWindowsErr(0);
+        return NULL;
+    }
+    MessageBoxW_t fn = (MessageBoxW_t)GetProcAddress(lib, "MessageBoxW");
+    int result = fn(NULL, text, caption, 0);
+
+    return PyLong_FromLong(result);
+}
+
 static PyMethodDef methods[] = {
     {"hello", hello, METH_FASTCALL, "Returns a greeting"},
+    {"call_messagebox", call_messagebox, METH_FASTCALL, "Message box"},
     {NULL, NULL, 0, NULL}
 };
 
