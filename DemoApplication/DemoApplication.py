@@ -1,3 +1,3 @@
 import seashell
 
-seashell.call_messagebox("hello", "thing")
+print(seashell.get_answer());
