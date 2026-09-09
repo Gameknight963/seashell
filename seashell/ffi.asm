@@ -1,25 +1,39 @@
-PUBLIC asm_call_ptr
+PUBLIC asm_call 
 
 ; First 4 integer arguments come in as: RCX, RDX, R8, R9
+; Fisrt 4 float arguments: XMM0, XMM1, XMM2, XMM3
+
 ; calle-saved: RBX, RBP, RDI, RSI, R12-R15
-; caller-saved (scratch): RAX, RCX, RDX, R8, R9, R10, R11
+; scratch: RAX (return value), R10, R11
 
-; asm_call_ptr movs a function pointer to RCX and
-; an int to RDX
+; RCX is the pointer
+; RDX is argc
+; R8 is a pointer to the first element in argv
+; R9 is a pointer to the first element in an array of whether the corresponding element of argv is a float or not
 
-; double_it expects its argument in RCX
 
 .code
-asm_call_ptr PROC
-	; stack alignment or something
-	sub rsp, 40
-	; mov the pointer to a scratch register so we don't overwrite it
-	mov rax, rcx
-	; mov the int to rcx so we can call the pointer
-	mov rcx, rdx
-	call rax
-	add rsp, 40
-	ret
-asm_call_ptr ENDP
+asm_call PROC
+    ; we're pushing 4 values
+    ; 32 (shadow space) + 32 (our sub) + 8 (return address) = 72
+    ; we need one more byte to get to a 16 byte aligned number, 80
+    ; so we sub 40 from rsp
+
+    sub rsp, 40
+    push rcx
+    push rdx
+    push r8
+    push r9
+
+    ; jump to done if arg count is less than 1
+    cmp rdx, 1
+    jl done
+
+asm_call ENDP
+
+    done:
+        call ; fill in later, cant use rcx
+        add rsp, 40
+        ret
 
 END

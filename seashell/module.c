@@ -12,6 +12,12 @@ static PyObject* get_answer_py(PyObject* self, PyObject* const* args, Py_ssize_t
     return PyLong_FromLongLong(asm_call_ptr(double_it, 5));
 }
 
+extern long long asm_call(
+    void* fn_ptr,
+    int argc,
+    long long* argv,
+    char* is_float
+);
 
 static PyObject* call_messagebox(PyObject* self, PyObject* const* args, Py_ssize_t nargs) {
     if (nargs != 2) {
