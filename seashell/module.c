@@ -5,22 +5,20 @@
 typedef int (WINAPI* MessageBoxW_t)(HWND, LPCWSTR, LPCWSTR, UINT);
 
 long long double_it(long long x) { return x * 2; }
-
-extern long long asm_call_double(long long x);
-
-static PyObject* hello(PyObject* self, PyObject* const* args, Py_ssize_t nargs) {
-    return PyUnicode_FromString("hello from C!");
-}
+typedef long long (*fn_t)(long long);
+extern long long asm_call_ptr(fn_t func, long long x);
 
 static PyObject* get_answer_py(PyObject* self, PyObject* const* args, Py_ssize_t nargs) {
-    return PyLong_FromLongLong(asm_call_double(5));
+    return PyLong_FromLongLong(asm_call_ptr(double_it, 5));
 }
+
 
 static PyObject* call_messagebox(PyObject* self, PyObject* const* args, Py_ssize_t nargs) {
     if (nargs != 2) {
         PyErr_SetString(PyExc_TypeError, "expected (text, caption)");
         return NULL;
     }
+
     const wchar_t* text = PyUnicode_AsWideCharString(args[0], NULL);
     const wchar_t* caption = PyUnicode_AsWideCharString(args[1], NULL);
     if (!text || !caption) {
@@ -40,7 +38,6 @@ static PyObject* call_messagebox(PyObject* self, PyObject* const* args, Py_ssize
 }
 
 static PyMethodDef methods[] = {
-    {"hello", hello, METH_FASTCALL, "Returns a greeting"},
     {"call_messagebox", call_messagebox, METH_FASTCALL, "Message box"},
     {"get_answer", get_answer_py, METH_FASTCALL, "Gets a number, made in asm"},
     {NULL, NULL, 0, NULL}

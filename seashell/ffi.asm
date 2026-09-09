@@ -1,25 +1,25 @@
-PUBLIC asm_add
-PUBLIC asm_call_double
-EXTERN double_it:PROC
+PUBLIC asm_call_ptr
 
 ; First 4 integer arguments come in as: RCX, RDX, R8, R9
+; calle-saved: RBX, RBP, RDI, RSI, R12-R15
+; caller-saved (scratch): RAX, RCX, RDX, R8, R9, R10, R11
+
+; asm_call_ptr movs a function pointer to RCX and
+; an int to RDX
+
+; double_it expects its argument in RCX
 
 .code
-asm_add PROC
-    add rcx, rdx
-    mov rax, rcx
-    ret
-asm_add ENDP
-
-asm_call_double PROC
-    sub rsp, 48
-    ; double_it takes 1 argument
-    ; since we have the same signature
-    ; we can just leave the caller's rcx
-    call double_it
-    ; rax alreay has the value we want, leave it
-    add rsp, 48
-    ret
-asm_call_double ENDP
+asm_call_ptr PROC
+	; stack alignment or something
+	sub rsp, 40
+	; mov the pointer to a scratch register so we don't overwrite it
+	mov rax, rcx
+	; mov the int to rcx so we can call the pointer
+	mov rcx, rdx
+	call rax
+	add rsp, 40
+	ret
+asm_call_ptr ENDP
 
 END
