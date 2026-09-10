@@ -1,6 +1,6 @@
 <Project>
 	<PropertyGroup>
-		<PythonDir>C:\Users\sebi\AppData\Local\Programs\Python\Python313</PythonDir>
+		<PythonDir>C:\Users\sebis\AppData\Local\Programs\Python\Python313</PythonDir>
 	</PropertyGroup>
 	<ItemDefinitionGroup>
 		<ClCompile>

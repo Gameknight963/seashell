@@ -3,6 +3,8 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
+seashell/python.props
+
 # dotenv files
 .env
 
