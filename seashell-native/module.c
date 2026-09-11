@@ -100,6 +100,6 @@ static struct PyModuleDef module = {
     PyModuleDef_HEAD_INIT, "seashell", NULL, -1, methods
 };
 
-PyMODINIT_FUNC PyInit_seashell(void) {
+PyMODINIT_FUNC PyInit__seashell(void) {
     return PyModule_Create(&module);
 }
