@@ -5,18 +5,21 @@ extern long long asm_call(
     void* fn_ptr,
     int argc,
     long long* argv,
-    char* is_float
+    char* is_float,
+    char is_float_return
 );
 
-long long add(long long a, long long b) {
+double add_floats(double a, double b) {
     return a + b;
 }
 
 static PyObject* test_asm_call(PyObject* self, PyObject* const* args, Py_ssize_t nargs) {
-    long long argv[] = { 10, 20 };
-    char is_float[] = { 0, 0 };
-    long long result = asm_call(add, 2, argv, is_float);
-    return PyLong_FromLongLong(result);
+    double a = 1.5, b = 2.5;
+    long long argv[] = { *(long long*)&a, *(long long*)&b };
+    char is_float[] = { 1, 1 };
+    long long result = asm_call(add_floats, 2, argv, is_float, 1);
+    double dresult = *(double*)&result;
+    return PyFloat_FromDouble(dresult);
 }
 
 static PyMethodDef methods[] = {
