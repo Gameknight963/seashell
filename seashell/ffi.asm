@@ -25,7 +25,8 @@ asm_call PROC
     mov r10, [rsp + 16] ; rsp + 16 is argc
     cmp r10, 1
     jl done ; jump if argc is 0
-    mov rcx, [rsp + 8] ; rsp + 8 is argv pointer
+    mov r10, [rsp + 8]  ; get argv pointer
+    mov rcx, [r10]      ; read argv[0]
 
     ; second item of argv
     mov r10, [rsp + 16]
@@ -56,7 +57,7 @@ asm_call PROC
 
         sub rsp, 40
         call qword ptr [rsp + 64] ; the function pointer was moved by the last line
-        add rsp, 40
+        add rsp, 72 ; we need to back up 32 bytes for our locals
         ret
 
 asm_call ENDP
