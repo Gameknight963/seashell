@@ -17,25 +17,23 @@ PUBLIC asm_call
 
 .code
 asm_call PROC
-    mov [rsp + 32], rcx ; fn_ptr
-    mov [rsp + 24], rdx ; argc
-    mov [rsp + 16], r8 ; argv ptr
-    mov [rsp + 8], r9 ; is_float ptr
+    push rbp
+    mov rbp, rsp
 
-    ; push rcx ; [rsp + 24]
-    ; push rdx ; [rsp + 16]
-    ; push r8 ; [rsp + 8]
-    ; push r9 ; [rsp]
+    mov [rsp + 40], rcx ; fn_ptr
+    mov [rsp + 32], rdx ; argc
+    mov [rsp + 24], r8 ; argv ptr
+    mov [rsp + 16], r9 ; is_float ptr
 
-    ; first item of argv
-    mov r10, [rsp + 24] ; argc
+    ; argv[0]
+    mov r10, [rbp + 32] ; argc
     cmp r10, 1
     jl done ; jump if argc is 0
 
-    mov r10, [rsp + 8] ; get is_float pointer
+    mov r10, [rbp + 16] ; get is_float pointer
     movzx r11, byte ptr [r10] ; read is_float[0]
 
-    mov r10, [rsp + 16]  ; get argv pointer
+    mov r10, [rbp + 24]  ; get argv pointer
 
     cmp r11, 0
     je int_path_0 ; jump if is_float[0] is false
@@ -49,15 +47,15 @@ asm_call PROC
 
     done_0:
 
-    ; second item of argv
-    mov r10, [rsp + 24]
+    ; argv[1]
+    mov r10, [rbp + 32]
     cmp r10, 2
-    jl done ; jump if argc is 1
+    jl load_stackparams ; jump if argc is 1
 
-    mov r10, [rsp + 8] ; get is_float pointer
+    mov r10, [rbp + 16] ; get is_float pointer
     movzx r11, byte ptr [r10 + 1] ; read is_float[1]
 
-    mov r10, [rsp + 16] ; get argv pointer
+    mov r10, [rbp + 24] ; get argv pointer
 
     cmp r11, 0
     je int_path_1 ; jump if is_float[1] is false
@@ -71,15 +69,15 @@ asm_call PROC
     
     done_1:
     
-    ; third item of argv
-    mov r10, [rsp + 24]
+    ; argv[2]
+    mov r10, [rbp + 32]
     cmp r10, 3
-    jl done ; jump if argc is 2
+    jl load_stackparams ; jump if argc is 2
 
-    mov r10, [rsp + 8] ; get is_float pointer
+    mov r10, [rbp + 16] ; get is_float pointer
     movzx r11, byte ptr [r10 + 2] ; read is_float[2]
 
-    mov r10, [rsp + 16] ; get argv pointer
+    mov r10, [rbp + 24] ; get argv pointer
 
     cmp r11, 0
     je int_path_2 ; jump if is_float[2] is false
@@ -93,15 +91,15 @@ asm_call PROC
 
     done_2:
 
-    ; fourth item of argv
-    mov r10, [rsp + 24]
+    ; argv[3]
+    mov r10, [rbp + 32]
     cmp r10, 4
-    jl done ; jump if argc is 3
+    jl load_stackparams ; jump if argc is 3
 
-    mov r10, [rsp + 8] ; get is_float pointer
+    mov r10, [rbp + 16] ; get is_float pointer
     movzx r11, byte ptr [r10 + 3] ; read is_float[3]
 
-    mov r10, [rsp + 16] ; get argv pointer
+    mov r10, [rbp + 24] ; get argv pointer
     
     cmp r11, 0
     je int_path_3 ; jump if is_float[3] is false
@@ -115,26 +113,28 @@ asm_call PROC
         
     done_3:
 
+    load_stackparams:
+     ; todo: load stack params
+
     done:
 
-    ; we have no locals
     ; ABI guarantees rsp is 16n+8 on function entry
     ; subtracting 40 from that gives 16n-32 which is aligned
 
     sub rsp, 40
-    call qword ptr [rsp + 72]
+    call qword ptr [rbp + 40]
     add rsp, 40
-
-    ; pushed by caller:
-    ; [rsp + 40] = is_float_return
     
-    movzx r10, byte ptr [rsp + 40] ; is_float_return
+    movzx r10, byte ptr [rbp + 48] ; is_float_return
     cmp r10, 0
     je return
 
+    ; we use movq here to reinterpret cast
     movq rax, xmm0
     
     return:
+    mov rsp, rbp
+    pop rbp
     ret
 
 asm_call ENDP
