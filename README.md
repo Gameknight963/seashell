@@ -27,3 +27,8 @@ This example plays a 440hz beep for 500ms.
      (i.e. exactly 1/2/4/8 bytes) by replicating the value as an int
  - Can't use native arrays / types / c-strings
    - This would require some marshaling implementation, doable but not trivial
+  
+## Building
+After cloning the repo, you'll need to create `seashell-native\python.props`. You can copy `python.example.props`, but make sure to replace PythonDir with the path to your Python installation.
+
+You should set DemoApplication as your startup project
