@@ -1,9 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="framework.h" />
+    <ClCompile Include="module.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dllmain.c" />
+    <MASM Include="ffi.asm" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="python.props" />
   </ItemGroup>
 </Project>

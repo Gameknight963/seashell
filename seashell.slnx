@@ -8,5 +8,9 @@
     <Platform Project="AnyCPU" />
     <Build Project="false" />
   </Project>
-  <Project Path="seashell/seashell.vcxproj" Id="b35aa7a8-80c7-4a2d-a02a-ea9b3919ab78" />
+  <Project Path="seashell-native/seashell-native.vcxproj" Id="b35aa7a8-80c7-4a2d-a02a-ea9b3919ab78" />
+  <Project Path="seashell/seashell.pyproj" Type="888888a0-9f3d-457c-b088-3a5042f75d52" Id="062cf84b-99be-406f-8011-38b9590e29c2">
+    <Platform Project="AnyCPU" />
+    <Build Project="false" />
+  </Project>
 </Solution>

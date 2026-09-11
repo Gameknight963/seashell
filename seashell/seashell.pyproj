@@ -2,15 +2,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>3f13f2e8-8a07-40d1-a36f-b56e5b5db578</ProjectGuid>
+    <ProjectGuid>062cf84b-99be-406f-8011-38b9590e29c2</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>DemoApplication.py</StartupFile>
+    <StartupFile>seashell.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
-    <Name>DemoApplication</Name>
-    <RootNamespace>DemoApplication</RootNamespace>
+    <Name>seashell</Name>
+    <RootNamespace>seashell</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,12 +21,12 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DemoApplication.py" />
+    <Compile Include="seashell.py" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\seashell\seashell.pyproj">
-      <Name>seashell</Name>
-      <Project>{062cf84b-99be-406f-8011-38b9590e29c2}</Project>
+    <ProjectReference Include="..\seashell-native\seashell-native.vcxproj">
+      <Name>seashell-native</Name>
+      <Project>{b35aa7a8-80c7-4a2d-a02a-ea9b3919ab78}</Project>
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
