@@ -24,6 +24,11 @@
     <Compile Include="DemoApplication.py" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\seashell-native\seashell-native.vcxproj">
+      <Name>seashell-native</Name>
+      <Project>{b35aa7a8-80c7-4a2d-a02a-ea9b3919ab78}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\seashell\seashell.pyproj">
       <Name>seashell</Name>
       <Project>{062cf84b-99be-406f-8011-38b9590e29c2}</Project>
