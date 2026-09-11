@@ -50,7 +50,7 @@ asm_call PROC
     jl done ; jump if argc is 1
 
     mov r10, [rsp] ; get is_float pointer
-    movzx r11, byte ptr [r10 + 8] ; read is_float[1]
+    movzx r11, byte ptr [r10 + 1] ; read is_float[1]
 
     mov r10, [rsp + 8] ; get argv pointer
 
@@ -72,7 +72,7 @@ asm_call PROC
     jl done ; jump if argc is 2
 
     mov r10, [rsp] ; get is_float pointer
-    movzx r11, byte ptr [r10 + 16] ; read is_float[2]
+    movzx r11, byte ptr [r10 + 2] ; read is_float[2]
 
     mov r10, [rsp + 8] ; get argv pointer
 
@@ -94,7 +94,7 @@ asm_call PROC
     jl done ; jump if argc is 3
 
     mov r10, [rsp] ; get is_float pointer
-    movzx r11, byte ptr [r10 + 24] ; read is_float[3]
+    movzx r11, byte ptr [r10 + 3] ; read is_float[3]
 
     mov r10, [rsp + 8] ; get argv pointer
     
