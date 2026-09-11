@@ -1,3 +1,2 @@
 import seashell
-
-print(seashell.get_answer());
+print(seashell.test_asm_call())

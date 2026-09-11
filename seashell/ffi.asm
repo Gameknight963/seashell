@@ -14,45 +14,48 @@ PUBLIC asm_call
 
 .code
 asm_call PROC
-    ; we're pushing 4 values
-    ; 32 (shadow space) + 32 (our locals) + 8 (return address) = 72
-    ; we need one more byte to get to a 16 byte aligned number, 80
-    ; so we sub 40 from rsp
-
-    sub rsp, 40
-    push rcx ; [rsp - 24]
-    push rdx ; [rsp - 16]
-    push r8 ; [rsp - 8]
+    push rcx ; [rsp + 24]
+    push rdx ; [rsp + 16]
+    push r8 ; [rsp + 8]
     push r9 ; [rsp]
 
     ; jump to done if arg count is less than 1
 
     ; first item of argv
-    cmp [rsp + 16], 1 ; rsp + 16 is argc
+    mov r10, [rsp + 16] ; rsp + 16 is argc
+    cmp r10, 1
     jl done ; jump if argc is 0
-    mov r10, [rsp + 8] ; rsp + 8 is argv pointer
-    mov rcx, [r10]
+    mov rcx, [rsp + 8] ; rsp + 8 is argv pointer
 
     ; second item of argv
-    cmp [rsp + 16], 2 ; rsp + 16 is argc
+    mov r10, [rsp + 16]
+    cmp r10, 2
     jl done ; jump if argc is 1
     mov r10, [rsp + 8] ; rsp + 8 is argv pointer
     mov rdx, [r10 + 8] ; argv item size is 64 bit
     
     ; third item of argv
-    cmp [rsp + 16], 3
-    jl done
+    mov r10, [rsp + 16]
+    cmp r10, 3
+    jl done ; jump if argc is 2
     mov r10, [rsp + 8]
     mov r8, [r10 + 16]
 
     ; fourth item of argv
-    cmp [rsp + 16], 4
-    jl done
+    mov r10, [rsp + 16]
+    cmp r10, 4
+    jl done ; jump if argc is 3
     mov r10, [rsp + 8]
     mov r9, [r10 + 24]
 
     done:
-        call [rsp + 24]
+        ; we're pushing 4 values
+        ; 32 (shadow space) + 32 (our locals) + 8 (return address) = 72
+        ; we need one more byte to get to a 16 byte aligned number, 80
+        ; so we sub 40 from rsp
+
+        sub rsp, 40
+        call qword ptr [rsp + 64] ; the function pointer was moved by the last line
         add rsp, 40
         ret
 
