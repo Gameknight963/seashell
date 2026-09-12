@@ -33,6 +33,12 @@ static PyObject* asm_call_py(PyObject* self, PyObject* const* args, Py_ssize_t n
             double d = PyFloat_AsDouble(arg);
             memcpy(&argv[i], &d, 8);
         }
+        else if (PyBytes_Check(arg)) {
+            argv[i] = (long long)PyBytes_AsString(arg);
+        }
+        else if (PyUnicode_Check(arg)) {
+            argv[i] = (long long)PyUnicode_AsWideCharString(arg, NULL);
+        }
         else {
             argv[i] = PyLong_AsLongLong(arg);
         }

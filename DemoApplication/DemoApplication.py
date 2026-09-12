@@ -1,4 +1,5 @@
 import time
+import random
 from seashell import *
 
 kernel32: Dll = Dll("kernel32.dll")
@@ -47,10 +48,14 @@ def play(melody: list):
         else:
             # Leave a tiny 20ms gap so consecutive identical notes articulate cleanly
             play_ms: int = max(duration - 20, 10)
+            print(pitch)
             kernel32.Beep(pitch, play_ms)
             time.sleep(0.02)
 
+MB_OK: int = 0
 
+user32 = Dll("user32.dll")
+user32.MessageBoxA(0, b"Hello from seashell!", b"Title", MB_OK)
 test: Dll = Dll("test.dll")
 print(test.add1(1))
 print(test.add2(1,2))
@@ -62,8 +67,6 @@ print("an iq too high??")
 print("listen to this")
 play(tetris_melody)
 
-print("its missing something...")
-time.sleep(1)
-
-print("muahahahahha")
-print(test.add6())
+if random.random() < 0.1:
+    print("element of suprise")
+    print(test.add6())
