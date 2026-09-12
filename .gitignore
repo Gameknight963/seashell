@@ -4,6 +4,7 @@
 ## Get latest from `dotnet new gitignore`
 
 seashell-native/python.props
+DemoApplication/test.dll
 
 # dotenv files
 .env

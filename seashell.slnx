@@ -13,4 +13,5 @@
     <Platform Project="AnyCPU" />
     <Build Project="false" />
   </Project>
+  <Project Path="test/test.vcxproj" Id="bc212d80-6bcf-415e-a54a-fad76d7dadd5" />
 </Solution>
