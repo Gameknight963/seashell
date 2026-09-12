@@ -20,10 +20,6 @@ static PyObject* asm_call_py(PyObject* self, PyObject* const* args, Py_ssize_t n
     }
     void* fn_ptr = PyLong_AsVoidPtr(args[0]);
     Py_ssize_t argc = PyList_Size(args[1]);
-    if (argc > 4) {
-        PyErr_SetString(PyExc_ValueError, "maximum 4 arguments");
-        return NULL;
-    }
     long long* argv = (long long*)alloca(argc * sizeof(long long));
     char* is_float = (char*)alloca(argc * sizeof(char));
     char is_float_return = PyObject_IsTrue(args[3]);

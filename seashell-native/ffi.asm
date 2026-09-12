@@ -114,16 +114,34 @@ asm_call PROC
     done_3:
 
     load_stackparams:
-     ; todo: load stack params
+    
+    ; jmp if argc is 4 or less
+    mov r10, [rbp + 32]
+    cmp r10, 5
+    jl done
+
+    ; If argc is odd pad by 8 bytes
+    mov r11, [rbp + 32] ; argc
+    test r11, 1 ; is it odd?...
+    jz no_pad ; then skip
+    sub rsp, 8 ; adding 8 bytes padding
+    no_pad:
+
+    mov r11, [rbp + 32] ; argc
+    sub r11, 1
+    mov r10, [rbp + 24] ; argv
+
+    again:
+        push qword ptr [r10 + r11*8] ; push argv[i]
+        dec r11
+        cmp r11, 4
+        jge again ; stop when we're about to load argv[3]
 
     done:
 
-    ; ABI guarantees rsp is 16n+8 on function entry
-    ; subtracting 40 from that gives 16n-32 which is aligned
-
-    sub rsp, 40
+    sub rsp, 32
     call qword ptr [rbp + 40]
-    add rsp, 40
+    add rsp, 32
     
     movzx r10, byte ptr [rbp + 48] ; is_float_return
     cmp r10, 0
